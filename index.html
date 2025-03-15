@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News App</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .news-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+            max-width: 1000px;
+        }
+
+        .news-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .news-card:hover {
+            transform: scale(1.05);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .news-card h3 {
+            margin: 10px 0;
+        }
+
+        .news-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .news-card a {
+            text-decoration: none;
+            color: #ff5733;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .news-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Latest News</h1>
+    <div class="news-container" id="newsContainer"></div>
+
+    <script>
+        async function fetchNews(page = 1, pageSize = 50) {
+            const apiKey = "96cb8d33e9f3444baebe1a3a5d41b4f5";
+            const url = `https://newsapi.org/v2/everything?q=tesla&from=2025-02-15&sortBy=publishedAt&language=en&page=${page}&pageSize=${pageSize}&apiKey=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.articles || [];
+            } catch (error) {
+                console.error("Error fetching news:", error);
+                return [];
+            }
+        }
+
+        async function loadAllNews() {
+            let allNews = [];
+            for (let i = 1; i <= 3; i++) { // Fetching 3 pages (adjust as needed)
+                const news = await fetchNews(i, 50);
+                allNews = allNews.concat(news);
+            }
+            displayNews(allNews);
+        }
+
+        function displayNews(articles) {
+            const newsContainer = document.getElementById("newsContainer");
+            newsContainer.innerHTML = "";
+
+            articles.forEach(article => {
+                if (article.urlToImage) {
+                    const newsCard = document.createElement("div");
+                    newsCard.classList.add("news-card");
+                    newsCard.innerHTML = `
+                <img src="${article.urlToImage}" alt="News Image">
+                <h3>${article.title}</h3>
+                <p>${article.description || "No description available."}</p>
+                <a href="${article.url}" target="_blank">Read more</a>
+            `;
+                    newsContainer.appendChild(newsCard);
+                }
+            });
+        }
+
+        loadAllNews();
+    </script>
+</body>
+
+</html>
