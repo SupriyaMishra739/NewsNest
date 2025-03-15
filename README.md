@@ -5,10 +5,7 @@
 
 ## 🎯 Features  
 ✅ **Latest News Updates** – Fetch real-time headlines from global sources  
-✅ **Category-Based News** – Browse news by categories like Business, Technology, Sports, etc.  
-✅ **Search Functionality** – Find articles based on keywords  
-✅ **Responsive UI** – Optimized for mobile and desktop users  
-✅ **Dark Mode Support** – Switch between light and dark themes  
+✅ **Responsive UI**  
 
 ## 🛠️ Technologies Used  
 - **Frontend:** HTML, CSS, JavaScript 
